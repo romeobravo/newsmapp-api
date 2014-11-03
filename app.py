@@ -58,26 +58,74 @@ def get():
     # Convert from string to ObjectId:
     docs = []
     for doc in posts.find():
-        print doc
-        doc.pop("_id", None)
         docs.append(doc)
+    return docs
+
+def getPost(post_id):
+    doc = posts.find_one({'_id': post_id})
+    return doc
+
+def getPostCountry(country):
+    docs = []
+    for doc in posts.find():
+        print doc
+        if country in doc['country']:
+            docs.append(doc)
     return docs
 
 @app.route('/')
 def hello_world():
-    post = {"author": "Mike",
-        "id": nextSequence(),
-        "text": "My first blog post!",
-        "tags": ["mongodb", "python", "pymongo"],
-        "date": datetime.datetime.utcnow().strftime("%Y%m%d%H%M%S")}
+    post = {
+        "_id"       : nextSequence(),
+        "provider"  : "BBC News",
+        "title"     : "Burkina Faso army told to hand over power",
+        "headline"  : "The African Union (AU) has given Burkina Faso's military a two-week deadline to hand power to a civilian ruler or face sanctions.",
+        "summary"   : "The AU said the army had acted unconstitutionally when it took over after President Blaise Compaore was forced to resign on Friday.",
+        "category"  : "politics",
+        "url"       : "http://www.bbc.com/news/world-africa-29888244",
+        "lat"       : 50,
+        "lng"       : 50,
+        "country"   : ["NL", "DE"],
+        "date"      : datetime.datetime.utcnow().strftime("%Y%m%d%H%M%S")
+    }
+    posts.insert(post)
+    post = {
+        "_id"       : nextSequence(),
+        "provider"  : "BBC News",
+        "title"     : "Burkina Faso army told to hand over power",
+        "headline"  : "The African Union (AU) has given Burkina Faso's military a two-week deadline to hand power to a civilian ruler or face sanctions.",
+        "summary"   : "The AU said the army had acted unconstitutionally when it took over after President Blaise Compaore was forced to resign on Friday.",
+        "category"  : "politics",
+        "url"       : "http://www.bbc.com/news/world-africa-29888244",
+        "lat"       : 50,
+        "lng"       : 100,
+        "country"   : ["NL", "DE"],
+        "date"      : datetime.datetime.utcnow().strftime("%Y%m%d%H%M%S")
+    }
+    posts.insert(post)
+    post = {
+        "_id"       : nextSequence(),
+        "provider"  : "BBC News",
+        "title"     : "Burkina Faso army told to hand over power",
+        "headline"  : "The African Union (AU) has given Burkina Faso's military a two-week deadline to hand power to a civilian ruler or face sanctions.",
+        "summary"   : "The AU said the army had acted unconstitutionally when it took over after President Blaise Compaore was forced to resign on Friday.",
+        "category"  : "politics",
+        "url"       : "http://www.bbc.com/news/world-africa-29888244",
+        "lat"       : 0,
+        "lng"       : 20,
+        "country"   : ["US"],
+        "date"      : datetime.datetime.utcnow().strftime("%Y%m%d%H%M%S")
+    }
     posts.insert(post)
     return 'Post saved'
 
 @app.route('/post/<int:post_id>')
-def get_posts(post_id):
-    doc = get(post_id)
-    logging.info(doc.author)
-    return post
+def get_post(post_id):
+    return Response(json.dumps(getPost(post_id)),  mimetype='application/json')
+
+@app.route('/post/country/<string:country>')
+def get_post_country(country):
+    return Response(json.dumps(getPostCountry(country)),  mimetype='application/json')
 
 @app.route('/post/all')
 def get_all():
