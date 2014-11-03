@@ -1,7 +1,0 @@
-DEBUG - debug message
-INFO - info message
-WARNING - warning message
-ERROR - error message
-CRITICAL - critical message
-INFO -  * Running on http://0.0.0.0:5000/
-INFO - 192.168.33.1 - - [03/Nov/2014 17:16:31] "GET /post/all HTTP/1.1" 200 -
