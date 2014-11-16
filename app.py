@@ -73,6 +73,15 @@ def getPostCountry(country):
             docs.append(doc)
     return docs
 
+def getPostCategory(category):
+    docs = []
+    for doc in posts.find():
+        print doc
+        if category == doc['category']:
+            docs.append(doc)
+    return docs
+
+
 @app.route('/')
 def hello_world():
     post = {
@@ -131,6 +140,9 @@ def get_post_country(country):
 def get_all():
     return Response(json.dumps(get()),  mimetype='application/json')
 
+@app.route('/post/category/<string:category>')
+def get_post_category(category):
+    return Response(json.dumps(getPostCategory(category)),  mimetype='application/json')
 
 initialize_logger('/var/www/server')
  
