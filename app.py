@@ -68,9 +68,11 @@ def getPost(post_id):
 def getPostCountry(country):
     docs = []
     for doc in posts.find():
-        print doc
+        print doc['country']
+        print country
         if country in doc['country']:
             docs.append(doc)
+        print docs
     return docs
 
 def getPostCategory(category):
@@ -92,37 +94,51 @@ def hello_world():
         "summary"   : "The AU said the army had acted unconstitutionally when it took over after President Blaise Compaore was forced to resign on Friday.",
         "category"  : "politics",
         "url"       : "http://www.bbc.com/news/world-africa-29888244",
-        "lat"       : 50,
-        "lng"       : 50,
-        "country"   : ["NL", "DE"],
+        "lat"       : 12,
+        "lng"       : -2,
+        "country"   : ["BF"],
         "date"      : datetime.datetime.utcnow().strftime("%Y%m%d%H%M%S")
     }
     posts.insert(post)
     post = {
         "_id"       : nextSequence(),
         "provider"  : "BBC News",
-        "title"     : "Burkina Faso army told to hand over power",
-        "headline"  : "The African Union (AU) has given Burkina Faso's military a two-week deadline to hand power to a civilian ruler or face sanctions.",
-        "summary"   : "The AU said the army had acted unconstitutionally when it took over after President Blaise Compaore was forced to resign on Friday.",
-        "category"  : "politics",
-        "url"       : "http://www.bbc.com/news/world-africa-29888244",
-        "lat"       : 50,
-        "lng"       : 100,
-        "country"   : ["NL", "DE"],
+        "title"     : "Roger Federer out of ATP World Tour final v Novak Djokovic",
+        "headline"  : "Roger Federer has withdrawn from the ATP World Tour final against Novak Djokovic because of a back injury",
+        "summary"   : "The 33-year-old Swiss announced he was not match-fit as he apologised in person to the crowd at the O2 Arena. Federer beat Stan Wawrinka 4-6 7-5 7-6 (8-6) on Saturday in a thrilling semi-final lasting two hours and 48 minutes. It is Djokovic's fourth victory at the season-ending event and he also becomes the first man to win three titles on the trot since Ivan Lendl in the 1980s.",
+        "category"  : "sports",
+        "url"       : "http://www.bbc.com/sport/0/tennis/30074849",
+        "lat"       : 52,
+        "lng"       : -0.29,
+        "country"   : ["GB"],
         "date"      : datetime.datetime.utcnow().strftime("%Y%m%d%H%M%S")
     }
     posts.insert(post)
     post = {
         "_id"       : nextSequence(),
         "provider"  : "BBC News",
-        "title"     : "Burkina Faso army told to hand over power",
-        "headline"  : "The African Union (AU) has given Burkina Faso's military a two-week deadline to hand power to a civilian ruler or face sanctions.",
-        "summary"   : "The AU said the army had acted unconstitutionally when it took over after President Blaise Compaore was forced to resign on Friday.",
-        "category"  : "politics",
-        "url"       : "http://www.bbc.com/news/world-africa-29888244",
-        "lat"       : 0,
-        "lng"       : 20,
-        "country"   : ["US"],
+        "title"     : "MH17 flight investigators remove crucial debris",
+        "headline"  : "Local workers have removed crucial debris and human remains from the crash site of the MH17 jet in rebel-held eastern Ukraine after months of delays.",
+        "summary"   : "The team, overseen by Dutch experts, targeted areas of the plane where most of the bodies are still unidentified. The debris and remains will be taken to the Netherlands for examination. The plane was shot down in July killing all 298 people on board - mostly Dutch nationals. Russia-backed rebels have been blamed, though they deny it. Dutch experts oversaw workers from the self-proclaimed Donetsk People's Republic cutting up parts of the plane and using cranes to load them onto lorries. Inspectors from the Netherlands had wanted to retrieve the debris themselves, but agreed to work with the rebel administration as they feared for their safety.",
+        "category"  : "conflict",
+        "url"       : "http://www.bbc.com/news/world-europe-30073283",
+        "lat"       : 49,
+        "lng"       : 37,
+        "country"   : ["NL", "UA"],
+        "date"      : datetime.datetime.utcnow().strftime("%Y%m%d%H%M%S")
+    }
+    posts.insert(post)
+    post = {
+        "_id"       : nextSequence(),
+        "provider"  : "BBC News",
+        "title"     : "China to double Iranian investment",
+        "headline"  : "China is set to double its investment in Iranian infrastructure projects, Iran's Mehr news agency reports.",
+        "summary"   : "China has raised its quota for Iranian projects to $52bn (33bn) from $25bn the report said, quoting Iran's deputy minister for energy, Esmail Mahsouli. Water, electricity, oil and gas projects will all benefit from the extra financing, Mr Mahsouli said. Iran has turned to China, Russia and Turkey for financing as Europe and the US have strict sanctions on the nation. The US has an almost total economic embargo on Iran, while the European Union tightened up its sanctions in 2012, particularly targeting the energy and banking industries.",
+        "category"  : "economy",
+        "url"       : "http://www.bbc.com/news/business-30075807",
+        "lat"       : 32,
+        "lng"       : 53,
+        "country"   : ["IR", "CN"],
         "date"      : datetime.datetime.utcnow().strftime("%Y%m%d%H%M%S")
     }
     posts.insert(post)
