@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-from flask import Flask
+from flask import Flask, request, jsonify
 from flask import Response
 from pymongo import MongoClient
 import logging
@@ -8,12 +8,14 @@ import os.path
 import datetime
 import sys
 import json
+import glob
 
 app = Flask(__name__)
 
 client = MongoClient('localhost', 27017)
 db = client.newsmapp
 posts = db.newsitems
+surveys = db.surveys
 counters = db.counters
 
 def nextSequence():
@@ -93,7 +95,7 @@ def hello_world():
         "provider"  : "BBC News",
         "title"     : "Burkina Faso army told to hand over power",
         "headline"  : "The African Union (AU) has given Burkina Faso's military a two-week deadline to hand power to a civilian ruler or face sanctions.",
-        "summary"   : "The AU said the army had acted unconstitutionally when it took over after President Blaise Compaore was forced to resign on Friday.",
+        "summary"   : "The AU said the army had acted unconstitutionally when it took over after President Blaise Compaore was forced to resign on Friday. The military said a civilian-led transitional government would be established as quickly as possible. Mr Compaore quit after mass protests at his bid to extend his 27-year rule. On Saturday, the military named Lt Col Isaac Zida, previously second in command of the presidential guard, as the new interim ruler. <br> A popular revolt led to Mr Compaore's resignation, but the military takeover was against democracy, said AU official Simeon Oyono Esono, following a meeting of the body's Peace and Security Council in Ethiopia. The AU will apply sanctions against Burkina Faso if the military fails to give up power within two weeks, Mr Esonohe told Reuters. The BBC's Emmanuel Igunza in the Ethiopian capital Addis Ababa says the sanctions could include suspension of Burkina Faso's AU membership and a travel ban on military officials.",
         "category"  : "politics",
         "url"       : "http://www.bbc.com/news/world-africa-29888244",
         "lat"       : 12,
@@ -247,6 +249,15 @@ def get_all():
 def get_post_category(category):
     return Response(json.dumps(getPostCategory(category)),  mimetype='application/json')
 
+@app.route('/exp/result', methods=["POST"])
+def save_result():
+    obj = json.loads(request.data)
+    docs = list(surveys.find({'_id': obj['_id']}))
+    print obj['_id']
+    if len(docs) is 0:
+        surveys.insert(obj)
+    return Response('',  mimetype='application/json');
+
 initialize_logger('/var/www/server')
  
 logging.debug("debug message")
@@ -254,6 +265,25 @@ logging.info("info message")
 logging.warning("warning message")
 logging.error("error message")
 logging.critical("critical message")
+
+
+posts.drop()
+script_dir = os.path.dirname(__file__)
+print script_dir
+file_path = os.path.join(script_dir, 'articles.json')
+
+
+f = open(file_path, 'r')
+for line in f.read().split("\n"):
+    print line
+    if line:
+        lineJson = json.loads(line)
+        lineJson['_id'] = nextSequence()
+        lineJson['date'] = datetime.datetime.utcnow().strftime("%Y%m%d%H%M%S")
+        postid = posts.insert(lineJson)
+        print 'inserted with id: ' , postid
+
+    f.close()
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
